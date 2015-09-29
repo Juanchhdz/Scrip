@@ -1,0 +1,46 @@
+#!/bin/bash 
+
+if [ $(whoami) != "root" ]; then
+    echo "Tienes que ser root para ejecutar este script"
+    echo "Ejecuta "sudo su" para ser root"
+    exit 1
+fi
+ 
+while [ "$opcion" != "0" ]
+do
+
+sudo groupadd Admin
+sudo groupadd Doscentes
+sudo groupadd Alumnos
+
+cd /home
+sudo mkdir plantel
+
+cd plantel
+sudo mkdir Admin
+sudo mkdir Doscentes
+sudo mkdir Alumnos
+
+chgrp Admin Admin
+chgrp Doscentes Doscentes
+chgrp Alumnos Alumnos
+echo "Escoja la Opcion a realizar" 
+echo "1. Create user Alumnos"
+echo "2. Create user Doscente" 
+echo "3. Create user Admin"
+echo "0. Cambiar a root (Salir)"
+
+read opcion
+ 
+case $opcion in
+
+1)
+echo "Ingresa el nombre de usuario"
+read user 
+sudo useradd $user -d /home/plantel/Alumnos/$user -m -g Alumnos
+sudo passwd $user 
+cd /home/plantel/Alumnos/
+sudo chmod 705 $user  
+;;
+
+
